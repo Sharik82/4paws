@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="/public/img/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="icon" type="image/png" href="../img/header/logo_large_purple.png">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .registration-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .registration-form:hover {
+      transform: scale(1.03);
+    }
+
+    .registration-form img {
+      width: 60px;
+      margin-bottom: 20px;
+    }
+
+    .registration-form input[type="text"],
+    .registration-form input[type="password"] {
+      width: calc(100% - 20px);
+      padding: 12px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      display: block;
+      box-sizing: border-box;
+    }
+
+    .registration-form input[type="text"]:focus,
+    .registration-form input[type="password"]:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    .registration-form .main-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .registration-form .main-button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .or-divider {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #ccc;
+    }
+
+    .or-divider span {
+      margin: 0 10px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    .social-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .social-button i {
+      font-size: 20px;
+    }
+
+    .social-button:hover {
+      transform: scale(1.05);
+    }
+
+    .social-button img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .social-button.facebook {
+      background-color: #1877f2;
+      color: white;
+      border: none;
+    }
+
+    .social-button.facebook:hover {
+      background-color: #145dbb;
+    }
+
+    .social-button.google {
+      background-color: white;
+      border-color: #ccc;
+    }
+
+    .social-button.google:hover {
+      background-color: #f4f4f4;
+    }
+
+    .forgot-password {
+      margin-top: 15px;
+      color: #0073e6;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: #005bb5;
+    }
+
+    .create-account {
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .create-account a {
+      color: #0073e6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .create-account a:hover {
+      color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="registration-form" id="registration-form">
+    <img src="../img/header/logo.jpg" alt="Logo">
+
+    <input type="text" placeholder="ПІБ" id="fullName" required>
+    <input type="text" placeholder="Email" id="email" required>
+    <input type="password" placeholder="Пароль" id="password" required>
+
+    <button class="main-button" onclick="submitForm()">Зареєструватись</button>
+
+    <div class="or-divider">
+      <span>Чи</span>
+    </div>
+
+    <div class="social-button facebook">
+      <i class="fab fa-facebook-f"></i>
+      <span>Continue with Facebook</span>
+    </div>
+  
+    <div class="social-button google">
+      <i class="fab fa-google"></i>
+      <span>Continue with Google</span>
+    </div>
+  
+    <div class="forgot-password">Forgot your password?</div>
+
+    <div class="create-account">
+      Already have an account? <a href="#">Log in</a>
+    </div>
+  </div>
+
+  <script>
+    function submitForm() {
+      // Перевірка даних форми перед відправкою
+      const fullName = document.getElementById('fullName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (fullName && email && password) {
+        // Успішне заповнення форми
+        window.location.href = 'profile.html'; // Перенаправлення на сторінку особистого кабінету
+      } else {
+        alert('Будь ласка, заповніть усі поля.');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформлення замовлення</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .total { font-weight: bold; font-size: 18px; }
+        .empty-cart { text-align: center; font-size: 20px; color: red; }
+        button { padding: 10px 15px; background: red; color: white; border: none; cursor: pointer; margin-top: 20px; }
+        button:hover { background: darkred; }
+    </style>
+</head>
+<body>
+
+    <h1>Оформлення замовлення</h1>
+
+    <table id="cartTable">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Ціна</th>
+                <th>Кількість</th>
+                <th>Разом</th>
+            </tr>
+        </thead>
+        <tbody id="cartBody">
+            <!-- Товари будуть вставлятися сюди -->
+        </tbody>
+    </table>
+
+    <p class="total">Загальна сума: <span id="totalPrice">0</span> грн</p>
+
+    <button id="clearCart">Очистити кошик</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const cartBody = document.getElementById("cartBody");
+            const totalPriceEl = document.getElementById("totalPrice");
+            const clearCartBtn = document.getElementById("clearCart");
+
+            try {
+                // Отримуємо кошик з сервера
+                const response = await fetch("/api/cart");
+                const cart = await response.json();
+
+                if (cart.length === 0) {
+                    cartBody.innerHTML = '<tr><td colspan="4" class="empty-cart">Кошик порожній</td></tr>';
+                    return;
+                }
+
+                let total = 0;
+
+                cart.forEach(item => {
+                    const row = document.createElement("tr");
+                    const totalItemPrice = item.price * item.quantity;
+                    total += totalItemPrice;
+
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.price} грн</td>
+                        <td>${item.quantity}</td>
+                        <td>${totalItemPrice} грн</td>
+                    `;
+
+                    cartBody.appendChild(row);
+                });
+
+                totalPriceEl.textContent = total;
+            } catch (error) {
+                console.error("Помилка завантаження кошика:", error);
+            }
+
+            // Очищення кошика
+            clearCartBtn.addEventListener("click", async () => {
+                try {
+                    await fetch("/api/cart/clear", { method: "POST" });
+                    location.reload(); // Перезавантажуємо сторінку
+                } catch (error) {
+                    console.error("Помилка очищення кошика:", error);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

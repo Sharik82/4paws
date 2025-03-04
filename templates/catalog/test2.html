@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .filters {
+            width: 250px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .filters h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .filters label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .filters input[type="checkbox"], .filters input[type="range"], .filters select {
+            margin-right: 10px;
+        }
+
+        .filters .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-card h4 {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .product-card p {
+            font-size: 14px;
+            color: #555;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Filters Section -->
+        <div class="filters">
+            <h3>Фільтрація</h3>
+            <div class="filter-group">
+                <label for="price">Ціна:</label>
+                <input type="range" id="price" min="0" max="10000" step="500">
+            </div>
+            <div class="filter-group">
+                <label>Тип:</label>
+                <label><input type="checkbox"> Сухий</label>
+                <label><input type="checkbox"> Вологий</label>
+                <label><input type="checkbox"> Консерви</label>
+            </div>
+            <div class="filter-group">
+                <label for="brand">Бренд:</label>
+                <select id="brand">
+                    <option>Всі</option>
+                    <option>Royal Canin</option>
+                    <option>Hill's</option>
+                    <option>Purina</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Клас:</label>
+                <label><input type="checkbox"> Економ</label>
+                <label><input type="checkbox"> Преміум</label>
+                <label><input type="checkbox"> Супер преміум</label>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 1">
+                <h4>Сухий корм 1</h4>
+                <p>Ціна: 500 грн</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 2">
+                <h4>Сухий корм 2</h4>
+                <p>Ціна: 600 грн</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 3">
+                <h4>Сухий корм 3</h4>
+                <p>Ціна: 700 грн</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 4">
+                <h4>Сухий корм 4</h4>
+                <p>Ціна: 800 грн</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 5">
+                <h4>Сухий корм 5</h4>
+                <p>Ціна: 900 грн</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Товар 6">
+                <h4>Сухий корм 6</h4>
+                <p>Ціна: 1000 грн</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
