@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Усі товари — Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="sidebar">
+  <h2>4 Paws Admin</h2>
+  <ul>
+    <li><a href="{{ url_for('admin.admin_dashboard') }}"><i class="fas fa-chart-line"></i> Панель</a></li>
+    <li>
+      <a href="#"><i class="fas fa-box-open"></i> Товари <i class="fas fa-caret-down" style="margin-left:auto;"></i></a>
+      <ul class="submenu">
+        <li><a href="{{ url_for('admin.admin_products') }}">Категорії</a></li>
+        <li><a href="{{ url_for('admin.products_table') }}">Усі товари</a></li>
+        <li><a href="{{ url_for('admin.add_product') }}">+ Додати товар</a></li>
+      </ul>
+    </li>
+    <li><a href="{{ url_for('admin.admin_orders') }}"><i class="fas fa-shopping-cart"></i> Замовлення</a></li>
+    <li><a href="{{ url_for('admin.admin_users') }}"><i class="fas fa-users"></i> Користувачі</a></li>
+    <li><a href="{{ url_for('admin.admin_settings') }}"><i class="fas fa-cogs"></i> Налаштування</a></li>
+    <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Вийти</a></li>
+  </ul>
+</div>
+<div class="main-content">
+  <div class="table-wrapper">
+    <h2><i class="fas fa-table"></i> Усі товари</h2>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Фото</th>
+          <th>Назва</th>
+          <th>Категорія</th>
+          <th>Тип</th>
+          <th>Ціна</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>
+            {% if p.image %}
+              <img src="{{ url_for('static', filename=p.image) }}" alt="Фото" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+            {% else %}
+              <span style="color: #888;">—</span>
+            {% endif %}
+          </td>
+          <td>{{ p.name }}</td>
+          <td><span class="badge">{{ p.category }}</span></td>
+          <td>{{ p.details.split()[0] if p.details else '–' }}</td>
+          <td>{{ p.price }} грн</td>
+          <td class="actions">
+            <div class="dropdown-wrapper">
+              <button class="info-btn" onclick="toggleActionMenu({{ p.id }})">
+                <i class="fas fa-circle-info"></i>
+              </button>
+              <div class="dropdown" id="action-menu-{{ p.id }}">
+                <a href="{{ url_for('admin.edit_product', product_id=p.id) }}" class="dropdown-action">
+                  <i class="fas fa-pen"></i> Редагувати
+                </a>
+                <form method="POST" action="{{ url_for('admin.delete_product', product_id=p.id) }}">
+                  <button type="submit" class="dropdown-action delete-action" onclick="return confirm('Ви впевнені, що хочете видалити товар?')">
+                    <i class="fas fa-trash"></i> Видалити
+                  </button>
+                </form>
+                <div class="dropdown-action route-action">
+                  <i class="fas fa-folder-open"></i>
+                  {{ p.main_category }}/{{ p.sub_category }}
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  function toggleActionMenu(id) {
+    const menu = document.getElementById(`action-menu-${id}`);
+    if (menu.classList.contains('show')) {
+      menu.classList.remove('show');
+    } else {
+      document.querySelectorAll('.dropdown').forEach(m => m.classList.remove('show'));
+      menu.classList.add('show');
+    }
+  }
+
+  document.addEventListener('click', function(e) {
+    const isButton = e.target.closest('.info-btn');
+    const isMenu = e.target.closest('.dropdown');
+    if (!isButton && !isMenu) {
+      document.querySelectorAll('.dropdown').forEach(menu => menu.classList.remove('show'));
+    }
+  });
+</script>
+</body>
+</html>

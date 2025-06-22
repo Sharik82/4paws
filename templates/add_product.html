@@ -1,0 +1,19 @@
+<h1>Додати новий товар</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }} {{ form.name() }}
+    </div>
+    <div>
+        {{ form.description.label }} {{ form.description() }}
+    </div>
+    <div>
+        {{ form.price.label }} {{ form.price() }}
+    </div>
+    <div>
+        {{ form.image_url.label }} {{ form.image_url() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>

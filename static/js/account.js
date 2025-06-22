@@ -13,29 +13,28 @@ function displayGreeting() {
     }
 }
 
-// Викликаємо функцію після завантаження сторінки
+
 window.onload = function() {
     displayGreeting();
 };
-// Знаходимо кнопку "Налаштування" та панель
+
 const settingsLink = document.getElementById('settings-link');
 const settingsPanel = document.getElementById('settings-panel');
 
-// Функція для відкриття/закриття панелі
+
 function openSettingsPanel() {
-    // Якщо панель вже відкрита, закриваємо її
+    
     if (settingsPanel.classList.contains('visible')) {
         settingsPanel.classList.remove('visible');
         settingsPanel.classList.add('hidden');
     } else {
-        // Якщо панель закрита, відкриваємо її
+        
         settingsPanel.classList.remove('hidden');
         settingsPanel.classList.add('visible');
     }
 }
 
-// Додаємо подію до кнопки
 settingsLink.addEventListener('click', function(event) {
-    event.preventDefault(); // Запобігаємо стандартній дії кнопки
-    openSettingsPanel();    // Відкриваємо панель
+    event.preventDefault(); 
+    openSettingsPanel();    
 });

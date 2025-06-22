@@ -206,7 +206,7 @@
     <div class="order-grid">
         <div class="order-item">
             <div class="order-info">
-                <img src="/Users/denisshargorodsky/Desktop/4paws/tests/Post3.png" alt="Nova Poshta">
+                <img src="{{ url_for('static', filename='img/header/0e8056cffbadfbc8abdb37fdbeadd96c.jpg') }}" alt="Nova Poshta">
                 <div>
                     <h4>#2345</h4>
                     <p class="status completed">Завершено</p>
@@ -216,18 +216,19 @@
                 </button>
             </div>
             <div class="order-details">
-                <p><i class="fas fa-box-open"></i> <strong>Отримувач:</strong> Іван Петров</p>
+                <p><i class="fas fa-box-open"></i> <strong>Отримувач:</strong> Шаргородський Денис Костянтинович</p>
                 <p><strong>Відправник:</strong> ФОП Оксана Шаргородська</p>
                 <p><strong>Відділення:</strong> №14, м. Київ</p>
-                <p><strong>Товар:</strong> Сухий корм для собак (10 кг)</p>
-                <img src="/Users/denisshargorodsky/Desktop/4paws/public/img/Dog-css/6.webp" alt="Сухий корм" width="80">
-                <p>Сума: 1200 грн</p>
+                <p><strong>ТТН:</strong> 20 6000 1360 4653</p>
+                <p><strong>Товар:</strong> Сухий корм для собак Brit Premium Sport 3 кг - курка</p>
+                <img src="{{ url_for('static', filename='img/Dog-css/5.webp') }}" alt="Сухий корм" width="80">
+                <p>Сума: 699.00 грн</p>
             </div>
         </div>
 
         <div class="order-item">
             <div class="order-info">
-                <img src="/Users/denisshargorodsky/Desktop/4paws/tests/4023683559_w600_h600_bezkoshtovna-dostavka-nova.webp" alt="Nova Poshta">
+                <img src="{{ url_for('static', filename='img/header/0e8056cffbadfbc8abdb37fdbeadd96c.jpg') }}" alt="Nova Poshta">
                 <div>
                     <h4>#2346</h4>
                     <p class="status pending">В процесі</p>

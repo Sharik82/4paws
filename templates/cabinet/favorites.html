@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h2>Обрані товари</h2>
+  {% if products %}
+  <div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <div class="product-image">
+        <img src="{{ url_for('static', filename='images/' ~ product.image) }}" class="default-image" alt="{{ product.name }}">
+      </div>
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <div class="price">{{ product.price }} €</div>
+        <div class="stock-status">В наявності</div>
+      </div>
+      <div class="cart-icon" onclick="addToCart({{ product.id }})" title="Додати в кошик">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <div class="favorite-icon active" onclick="removeFavorite({{ product.id }}, this)" title="Видалити з обраного">
+        <i class="fas fa-heart"></i>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>У вас ще немає обраних товарів.</p>
+  {% endif %}
+</div>
+
+<script>
+function removeFavorite(productId, element) {
+  fetch('/cabinet/favorite', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: productId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "removed") {
+      element.closest(".product-card").remove();
+    }
+  });
+}
+</script>
+{% endblock %}

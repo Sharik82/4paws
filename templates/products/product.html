@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="icon" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="{{ url_for('catalog.index') }}" class="logo">
+        <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Лого">
+        <span class="logo-text">4 Paws</span>
+      </a>
+
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Пошук..." oninput="searchProducts()">
+        <button type="button"><i class="fas fa-search"></i></button>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cow-solid.svg') }}" alt="Агро"> Агро</a>
+      <a href="{{ url_for('catalog.dog_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dog-solid.svg') }}" alt="Собаки"> Собаки</a>
+      <a href="{{ url_for('catalog.cat_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cat-solid.svg') }}" alt="Коти"> Коти</a>
+      <a href="{{ url_for('catalog.rodents_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/frog-solid.svg') }}" alt="Гризуни"> Гризуни</a>
+      <a href="{{ url_for('catalog.fish_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/fish-solid.svg') }}" alt="Риби"> Риби</a>
+      <a href="{{ url_for('catalog.dove_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dove-solid.svg') }}" alt="Птахи"> Птахи</a>
+      <a href="{{ url_for('catalog.snake_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/staff-snake-solid.svg') }}" alt="Рептилії"> Рептилії</a>
+    </nav>
+
+    <div class="user-menu">
+      <button class="menu-btn"><i class="fas fa-user"></i></button>
+      <button id="cartButton" class="icon-btn cart-icon"><i class="fas fa-shopping-cart"></i></button>
+      <button class="icon-btn night-mode-toggle" onclick="toggleNightMode()"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn lang-switch" onclick="toggleLanguage()"><i class="fas fa-language"></i></button>
+    </div>
+  </header>
+
+  <div id="notification" class="notification"></div>
+
+  <div id="cartMenu" class="cart-menu">
+    <button class="close-cart" onclick="closeCart()">×</button>
+    <h3>Ваш кошик</h3>
+    <div id="cartItems" class="cart-items"></div>
+    <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
+    <button class="checkout-btn" onclick="submitCart()">Оформити замовлення</button>
+  </div>
+
+  <div class="product-page">
+  <div class="product-container">
+    <div class="product-gallery">
+      <div class="thumbnail-column">
+        {% set all_photos = [product.image] + (product.gallery.split(';') if product.gallery else []) %}
+        {% for img in all_photos if img.strip() %}
+          <img src="{{ url_for('static', filename=img) }}"
+               alt="Фото {{ loop.index }}"
+               class="thumbnail {% if loop.index0 == 0 %}active{% endif %}"
+               onclick="setMainPhoto({{ loop.index0 }})">
+        {% endfor %}
+      </div>
+      <img src="{{ url_for('static', filename=product.image) }}"
+           alt="{{ product.name }}"
+           class="main-photo"
+           id="mainPhoto">
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="availability">В наявності</p>
+      <div class="rating">★★★★★ <span>(19 відгуків)</span></div>
+
+      <div class="price">
+        <span class="current-price" id="dynamicPrice">Оберіть фасування</span>
+      </div>
+
+      {% if product.weights_json %}
+        <div class="packaging-options">
+          <span class="option-label">Фасування:</span>
+          <div class="weight-buttons">
+            {% for option in product.weights_json %}
+              <button class="weight-tile"
+                      data-weight="{{ option.weight }} {{ option.unit }}"
+                      data-price="{{ option.price }}">
+                {{ option.weight }} {{ option.unit }}
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Приховані поля для обраного фасування -->
+        <input type="hidden" id="selectedWeight">
+        <input type="hidden" id="selectedPrice">
+      {% endif %}
+
+      <input type="hidden" id="productName" value="{{ product.name }}">
+      <input type="hidden" id="productImage" value="{{ url_for('static', filename=product.image) }}">
+
+      <button class="add-to-cart"
+              data-name="{{ product.name }}"
+              data-image="{{ url_for('static', filename=product.image) }}">
+        Додати у кошик
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  <div class="product-details">
+    <div class="tabs">
+      <button class="tab-link active" onclick="openTab(event, 'description')">Опис</button>
+      <button class="tab-link" onclick="openTab(event, 'characteristics')">Характеристики</button>
+      <button class="tab-link" onclick="openTab(event, 'delivery')">Доставка</button>
+      <button class="tab-link" onclick="openTab(event, 'payment')">Оплата</button>
+    </div>
+
+    <div class="tab-content active" id="description">
+      <h2>Опис товару</h2>
+      <p>{{ product.details or 'Опис наразі відсутній.' }}</p>
+    </div>
+
+    <div class="tab-content" id="characteristics">
+      <h2>Характеристики</h2>
+      <ul>
+        <li>Тип: {{ product.category or '—' }}</li>
+        <li>Бренд: {{ product.brand or '—' }}</li>
+      </ul>
+    </div>
+
+    <div class="tab-content" id="delivery">
+      <h2>Доставка</h2>
+      <p>Безкоштовна доставка Новою Поштою при замовленні від 500 грн.</p>
+    </div>
+
+    <div class="tab-content" id="payment">
+      <h2>Оплата</h2>
+      <ul>
+        <li><i class="fas fa-credit-card"></i> Онлайн карткою</li>
+        <li><i class="fas fa-wallet"></i> Оплата при отриманні</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const weightSelect = document.getElementById("weightSelect");
+    const dynamicPrice = document.getElementById("dynamicPrice");
+    if (weightSelect && dynamicPrice) {
+      weightSelect.addEventListener("change", () => {
+        const selected = weightSelect.options[weightSelect.selectedIndex];
+        const price = selected.getAttribute("data-price");
+        if (price) dynamicPrice.textContent = `${price} грн`;
+      });
+    }
+  </script>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

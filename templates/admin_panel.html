@@ -1,0 +1,27 @@
+<h1>Адміністративна панель</h1>
+<a href="{{ url_for('add_product') }}">Додати новий товар</a>
+<table>
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Опис</th>
+            <th>Ціна</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }} грн</td>
+            <td>
+                <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST">
+                    <button type="submit">Видалити</button>
+                </form>
+                <a href="{{ url_for('edit_product', product_id=product.id) }}">Редагувати</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

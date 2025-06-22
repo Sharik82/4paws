@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimeal - Товар для котів</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <a href="{{ url_for('catalog.index') }}" class="logo">
+                <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Лого">
+                <span class="logo-text">4 Paws</span>
+            </a>
+    
+            <!-- Поле пошуку -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Пошук..." oninput="searchProducts()">
+                <button type="button"><i class="fas fa-search"></i></button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    
+
+        <!-- Меню категорій по центру -->
+<nav class="nav">
+    <a href="#"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cow-solid.svg') }}" alt="Агро"> Агро</a>
+<a href="{{ url_for('catalog.dog_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dog-solid.svg') }}" alt="Собаки"> Собаки</a>
+<a href="{{ url_for('catalog.cat_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cat-solid.svg') }}" alt="Коти"> Коти</a>
+<a href="{{ url_for('catalog.rodents_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/frog-solid.svg') }}" alt="Гризуни"> Гризуни</a>
+<a href="{{ url_for('catalog.fish_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/fish-solid.svg') }}" alt="Риби"> Риби</a>
+<a href="{{ url_for('catalog.dove_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dove-solid.svg') }}" alt="Птахи"> Птахи</a>
+<a href="{{ url_for('catalog.snake_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/staff-snake-solid.svg') }}" alt="Рептилії"> Рептилії</a>
+
+</nav>
+
+        <div class="user-menu">
+            <button class="menu-btn">
+                <i class="fas fa-user"></i>
+            </button>
+            <button id="cartButton" class="icon-btn cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button class="icon-btn night-mode-toggle" onclick="toggleNightMode()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="icon-btn lang-switch" onclick="toggleLanguage()">
+                <i class="fas fa-language"></i>
+            </button>
+        </div>
+            
+            
+
+        </header class="header">
+
+
+            <div class="dashboard-menu" id="dashboardMenu">
+                <div class="dashboard-header">
+                    <h2>Особистий кабінет</h2>
+                    <p id="greeting"></p>
+                </div>
+                <ul class="menu-items">
+                    <li><a href="#"><i class="icon fas fa-user"></i>Мій профіль</a></li>
+                    <li><a href="#"><i class="icon fas fa-box"></i>Мої замовлення</a></li>
+                    <li><a href="#"><i class="icon fas fa-map-marker-alt"></i>Адреси доставки</a></li>
+                    <li><a href="#"><i class="icon fas fa-wallet"></i>Баланс гаманця</a></li>
+                    <li><a href="#"><i class="icon fas fa-credit-card"></i>Способи оплати</a></li>
+                    <li><a href="#"><i class="icon fas fa-sign-out-alt"></i>Вихід</a></li>
+                </ul>
+            </div>
+        </nav>
+    
+
+    <div id="notification" class="notification"></div>
+
+    <div id="cartMenu" class="cart-menu">
+        <button class="close-cart" onclick="closeCart()">×</button>
+        <h3>Ваш кошик</h3>
+        <div id="cartItems" class="cart-items"></div>
+        <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
+        <button class="checkout-btn">Оформити замовлення</button>
+    </div>
+    
+    
+    
+
+
+<div class="product-page">
+    <div class="product-container">
+        <div class="product-gallery">
+            <div class="thumbnail-column">
+                <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-93612454373597.webp') }}" alt="Фото товару 1" class="thumbnail active" onclick="setMainPhoto(0)">
+                <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-14543117783125.webp') }}" alt="Фото товару 2" class="thumbnail" onclick="setMainPhoto(1)">
+                <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-37712332494844.webp') }}" alt="Фото товару 3" class="thumbnail" onclick="setMainPhoto(2)">
+                <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-17126221404030.webp') }}" alt="Фото товару 1" class="thumbnail active" onclick="setMainPhoto(3)">
+                <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-41190985723877.webp') }}" alt="Фото товару 1" class="thumbnail active" onclick="setMainPhoto(4)">
+            </div>
+            <img src="{{ url_for('static', filename='img/Dog-css/suxoy-korm-dlja-sobak-royal-canin-chihuahua-adult-500-g-93612454373597.webp') }}" alt="Optimeal для котів" class="main-photo" id="mainPhoto">
+        </div>
+
+        <div class="product-info">
+            <h1>Сухий корм для собак Brit Premium Sport 3 кг - курка</h1>
+            <p class="availability">В наявності</p>
+            <div class="rating" onclick="scrollToReviews()">
+                ★★★★★ <span>(19 відгуки)</span>
+            </div>
+            <div class="price">
+                <span class="current-price">699.00 грн</span>
+                <span class="old-price">750.00 грн</span>
+        </div>
+
+        <div class="packaging-options">
+            <button onclick="selectOption(this)" data-weight="3 кг" data-price="699.00">3 кг</button>
+            <button onclick="selectOption(this)" data-weight="15 кг" data-price="2039.15">15 кг</button>
+        </div>
+        <button class="add-to-cart">Додати у кошик</button>
+    </div>
+            
+            
+            
+
+           
+    </div>
+</div>
+    
+<div class="product-details">
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'description')">Опис</button>
+        <button class="tab-link" onclick="openTab(event, 'characteristics')">Характеристики</button>
+        <button class="tab-link" onclick="openTab(event, 'delivery')">Доставка</button>
+        <button class="tab-link" onclick="openTab(event, 'payment')">Оплата</button>
+    </div>
+    
+    <div class="tab-content active" id="description">
+        <h2>Опис товару</h2>
+        <p>Ваше маленьке цуценя стрімко зростає, і вам знадобиться якісний корм для собак, який зможе задовольнити його нові потреби.
+
+
+            Сухий корм для цуценят середніх порід Hill's SCIENCE PLAN Puppy Medium із ягням і рисом забезпечує ідеальний баланс інгредієнтів і мінералів для задоволення потреб цуценят у період розвитку, завдяки чому вони отримують усе необхідне, щоб вирости сильними та здоровими.
+            
+            
+            Щоб допомогти вашому собаці в період зростання розвивати мозок і зір, цей корм для цуценят містить ДГК з риб’ячого жиру, а також якісний білок для нарощування м’язової маси. Збалансований набір мінералів сприяє зміцненню кісток вашого цуценяти, а також робить зуби здоровими та сильними.
+            
+            
+            Окрім того, рецептура цього корму розроблялася протягом десятиліть передових досліджень, щоб він набув неперевершеного смаку, перед яким цуценята не можуть встояти.</p>
+    </div>
+
+    <div class="tab-content" id="characteristics">
+        <h2>Характеристики</h2>
+        <ul>
+            <li>Вага: 500 г</li>
+            <li>Тип: Сухий корм</li>
+            <li>Бренд: Royal Canin</li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="delivery">
+        <h2>Доставка</h2>
+        <div class="delivery-grid">
+            <div class="delivery-item">
+                <img src="nova_poshta1.png" alt="Нова Пошта">
+                <div>
+                    <p>Нова Пошта</p>
+                    <span>Безкоштовно</span>
+                </div>
+            </div>
+            <div class="delivery-item">
+                <img src="images/samoviviz.png" alt="Самовивіз">
+                <div>
+                    <p>Самовивіз</p>
+                    <span>48 годин</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="payment">
+        <h2>Оплата</h2>
+        <div class="payment-options">
+            <div>
+                <i class="fas fa-credit-card"></i> Онлайн карткою
+            </div>
+            <div>
+                <i class="fas fa-wallet"></i> Оплата при отриманні
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="contact-info">
+            <h3><i class="fas fa-phone-alt"></i> Контактна інформація</h3>
+            <p><i class="fas fa-phone-alt"></i> 0 800 30 99 39 (безкоштовно)</p>
+            <p><i class="fas fa-phone-alt"></i> (044) 390 32 54</p>
+            <p><i class="fas fa-envelope"></i> info@4paws.com</p>
+        </div>
+
+        <div class="rating">
+            <h3>Рейтинг магазину: 4.98</h3>
+            <p>⭐⭐⭐⭐⭐ 1911 оцінок</p>
+        </div>
+
+        <div class="social-media">
+            <h3>Ми в соцмережах</h3>
+            <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
+        </div>
+        
+        <div class="extra-links">
+            <h3>Корисна інформація</h3>
+            <a href="#">Адреси роздрібних магазинів</a>
+            <a href="#">Нові товари</a>
+            <a href="#">Товари зі знижкою</a>
+            <a href="#">Корми на вагу</a>
+        </div>
+    </div>
+
+    <div class="payment-methods">
+        <h3>Способи оплати</h3>
+        <div class="payment-icons">
+            <img src="{{ url_for('static', filename='img/header/visa-svgrepo-com.svg') }}" alt="Visa">
+            <img src="{{ url_for('static', filename='img/header/mastercard-svgrepo-com.svg') }}" alt="Mastercard">
+            <img src="{{ url_for('static', filename='img/header/google-pay-brands-solid.svg') }}" alt="Google Pay">
+            <img src="{{ url_for('static', filename='img/header/apple-pay-brands-solid.svg') }}" alt="Apple Pay">
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    <div class="footer-bottom">
+        <p>© 2005 - 2025 Зоомагазин ® Всі права захищені</p>
+        <p>Умови використання сайту | Публічна оферта | Повернення товару</p>
+</div>
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+
+
+</body>
+</html>

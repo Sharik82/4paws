@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Додати товар</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <a href="{{ url_for('catalog.index') }}" class="paw-back-icon">
+    <i class="fas fa-paw"></i>
+    <span class="tooltip-text">Повернутись на головну</span>
+  </a> 
+
+  <div class="main-content">
+    <form method="POST" enctype="multipart/form-data" class="add-product-form">
+      <h2><i class="fas fa-box-open"></i> Додати новий товар</h2>
+
+      <div class="form-group">
+        <label><i class="fas fa-tag"></i> Назва товару</label>
+        <input type="text" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-align-left"></i> Короткий опис</label>
+        <textarea name="description" rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-hryvnia"></i> Ціна</label>
+        <input type="number" name="price" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-tags"></i> Стара ціна</label>
+        <input type="number" name="old_price" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-industry"></i> Бренд</label>
+        <input type="text" name="brand">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-weight-hanging"></i> Фасування</label>
+        <input type="text" name="weight">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-paw"></i> Категорія</label>
+        <input type="text" name="category">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-percentage"></i> Знижка (%)</label>
+        <input type="number" name="discount">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-image"></i> Основне зображення</label>
+        <input type="file" name="image">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-images"></i> Галерея</label>
+        <input type="file" name="gallery" multiple>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-file-alt"></i> Повний опис</label>
+        <textarea name="details" rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-cogs"></i> Характеристики (HTML або JSON)</label>
+        <textarea name="characteristics" rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-folder"></i> Головна категорія</label>
+        <select name="main_category" id="main_category" onchange="loadSubcategories(this.value)" required>
+          <option disabled selected>Оберіть категорію</option>
+          <option value="Собаки">Собаки</option>
+          <option value="Коти">Коти</option>
+          <option value="Гризуни">Гризуни</option>
+          <option value="Риби">Риби</option>
+          <option value="Птахи">Птахи</option>
+          <option value="Рептилії">Рептилії</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-layer-group"></i> Підкатегорія</label>
+        <select name="sub_category" id="sub_category" required>
+          <option disabled selected>Оберіть підкатегорію</option>
+        </select>
+      </div>
+      
+
+      <div class="form-group"></div>
+        <label><i class="fas fa-weight-hanging"></i> Фасування</label>
+        <div id="weights-container" class="weight-container"></div>
+        <button type="button" class="add-weight-button" onclick="addWeightField()">+ Додати фасування</button>
+      </div>
+
+      <script>
+        function addWeightField() {
+        const container = document.getElementById("weights-container");
+        const index = container.children.length;
+        container.insertAdjacentHTML('beforeend', `
+          <div class="weight-entry" style="margin-bottom: 12px; display: flex; gap: 10px;">
+             <input type="number" name="weights[${index}][amount]" placeholder="Кількість" style="flex:1;" required>
+             <select name="weights[${index}][unit]" style="flex:1;" required>
+              <option value="кг">кг</option>
+              <option value="г">г</option>
+              <option value="мг">мг</option>
+              <option value="л">л</option>
+              <option value="мл">мл</option>
+              <option value="шт">шт</option>
+              <option value="упаковка">упаковка</option>
+              <option value="комплект">комплект</option>
+              <option value="табл">табл</option>
+              <option value="ампул">ампул</option>
+            </select>
+            <input type="number" name="weights[${index}][price]" placeholder="Ціна" step="0.01" style="flex:1;" required>
+          </div>
+         `);
+       }
+      </script>
+
+      <button type="submit"><i class="fas fa-plus-circle"></i> Додати товар</button>
+    </form>
+  </div>
+
+  <script>
+    function loadSubcategories(category) {
+      const sub = document.getElementById("sub_category");
+      sub.innerHTML = '<option disabled selected>Оберіть підкатегорію</option>';
+
+      const options = {
+        "Собаки": [
+          { value: "dogcatalog", label: "Корм для собак" },
+          { value: "dog_treats", label: "Ласощі для собак" },
+          { value: "dog_toys", label: "Іграшки для собак" },
+          { value: "dog_sets", label: "Набори для собак" },
+          { value: "dog_gear", label: "Амуніція для собак" },
+          { value: "dog_supplements", label: "Вітаміни та добавки" },
+          { value: "dog_meds", label: "Ветпрепарати для собак" },
+          { value: "dog_carriers", label: "Сумки, переноски" },
+          { value: "dog_beds", label: "Мʼякі місця для собак" },
+          { value: "dog_clothes", label: "Одяг та взуття" },
+          { value: "dog_accessories", label: "Аксесуари для собак" },
+          { value: "dog_bowls", label: "Посуд для собак" },
+          { value: "dog_care", label: "Догляд та гігієна" },
+          { value: "dog_toilets", label: "Пелюшки, туалети" },
+          { value: "dog_cleaners", label: "Спецзасоби для собак" },
+          { value: "dog_smart", label: "Smart товари" }
+          ],
+
+        "Коти": [
+          { value: "cat_food", label: "Корм для котів" },
+          { value: "cat_treats", label: "Ласощі для котів" },
+          { value: "cat_toys", label: "Іграшки для котів" },
+          { value: "cat_sets", label: "Набори для котів" },
+          { value: "cat_gear", label: "Амуніція для котів" },
+          { value: "cat_supplements", label: "Вітаміни та добавки" },
+          { value: "cat_meds", label: "Ветпрепарати для котів" },
+          { value: "cat_carriers", label: "Сумки, переноски" },
+          { value: "cat_beds", label: "Мʼякі місця для котів" },
+          { value: "cat_clothes", label: "Одяг та взуття" },
+          { value: "cat_accessories", label: "Аксесуари для котів" },
+          { value: "cat_bowls", label: "Посуд для котів" },
+          { value: "cat_care", label: "Догляд та гігієна" },
+          { value: "cat_toilets", label: "Пелюшки, туалети" },
+          { value: "cat_cleaners", label: "Спецзасоби для котів" },
+          { value: "cat_smart", label: "Smart товари" }
+        ],
+
+      };
+
+      if (options[category]) {
+        options[category].forEach(subcat => {
+          const opt = document.createElement("option");
+          opt.value = subcat.value;
+          opt.textContent = subcat.label;
+          sub.appendChild(opt);
+        });        
+      }
+    }
+  </script>
+
+</body>
+</html>

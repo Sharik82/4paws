@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформлення замовлення - 4 Paws</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+    const fullNameInput = document.querySelector("input[name='fullName']");
+    const phoneInput = document.querySelector("input[name='phone']");
+    const deliverySelect = document.getElementById("deliveryMethod");
+    const citySelect = document.getElementById("city");
+    const branchSelect = document.getElementById("branch");
+    const paymentSelect = document.getElementById("paymentMethod");
+    const deliveryIcon = document.getElementById("delivery-icon");
+    const paymentIcon = document.getElementById("payment-icon");
+
+     
+     const novaPoshtaBranches = [
+        { name: "Відд 1", address: "вул. Київська, 33", closing: "19:00", weightLimit: "200 кг" },
+        { name: "Відд 2", address: "вул. Гончара, 20, прим. 96", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 3", address: "вул. Леваневського, 47/1", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 4", address: "вул. Михайла Сидорянського, 7б", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 5", address: "бульв. Олександрійський, 86", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 6", address: "вул. Заярська, 1", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 7", address: "пров. Пролетарський, 8", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 8", address: "вул. Запорізька, 2а, прим. 59", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 9", address: "вул. Леваневського, 62Б", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 10", address: "вул. Рибна, 8", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 11", address: "вул. Волонтерська, 11", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 12", address: "вул. С. Наливайка, 20А", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 13", address: "вул. Я. Мудрого, 40, ТРЦ 'Гермес' (2 поверх)", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 14", address: "вул. Таращанська, 191-А, неж. прим. 4Ж", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 15", address: "бульв. Олександрійський, 169", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 16", address: "вул. Івана Пулюя, 48, прим. 2", closing: "19:00", weightLimit: "1100 кг" },
+        { name: "Відд 17", address: "вул. Шолом Алейхема, 37, прим. 103-104", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 18", address: "вул. Толстого, 41а", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 19", address: "с. Шкарівка, вул. Тичини Павла, 9 (станція Роток)", closing: "20:00", weightLimit: "1100 кг" },
+        { name: "Відд 20", address: "вул. Князя Володимира, 10", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 21", address: "вул. Гетьмана Мазепи, 23", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 22", address: "вул. Соборна, 15", closing: "19:00", weightLimit: "30 кг" },
+        { name: "Відд 23", address: "вул. Вереснева, 10 (с. Фурси)", closing: "19:00", weightLimit: "30 кг" }
+    ];
+
+
+    // Підказка для ПІБ
+    const fullNameWarning = document.createElement("div");
+    fullNameWarning.style.color = "red";
+    fullNameWarning.style.fontSize = "12px";
+    fullNameWarning.style.marginTop = "5px";
+    fullNameWarning.style.display = "none";
+    fullNameWarning.innerText = "Будь ласка, використовуйте лише українські літери";
+    fullNameInput.parentNode.appendChild(fullNameWarning);
+
+    // Підказка для телефону
+    const phoneWarning = document.createElement("div");
+    phoneWarning.style.color = "red";
+    phoneWarning.style.fontSize = "12px";
+    phoneWarning.style.marginTop = "5px";
+    phoneWarning.style.display = "none";
+    phoneWarning.innerText = "Ви можете вводити лише цифри";
+    phoneInput.parentNode.appendChild(phoneWarning);
+
+    // Перевірка введення ПІБ
+    fullNameInput.addEventListener("input", function () {
+        const originalValue = this.value;
+        const correctedValue = originalValue.replace(/[^А-Яа-яЇїІіЄєҐґ' ]/g, "");
+
+        fullNameWarning.style.display = originalValue !== correctedValue ? "block" : "none";
+        this.value = correctedValue;
+    });
+
+    // Форматування номера телефону
+    function formatPhone(value) {
+        value = value.replace(/\D/g, ""); 
+        if (value.length > 12) value = value.slice(0, 12);
+
+        let formattedValue = "+38 ";
+        if (value.length > 2) formattedValue += `(${value.slice(2, 5)}) `;
+        if (value.length > 5) formattedValue += `${value.slice(5, 8)}-`;
+        if (value.length > 8) formattedValue += `${value.slice(8, 10)}-`;
+        if (value.length > 10) formattedValue += value.slice(10, 12);
+
+        return formattedValue.trim();
+    }
+
+    
+    phoneInput.addEventListener("input", function () {
+        let originalValue = this.value;
+        let value = originalValue.replace(/\D/g, ""); 
+
+        phoneWarning.style.display = /[^\d\s()+-]/.test(originalValue) ? "block" : "none";
+
+        this.value = formatPhone(value);
+
+        if (value.length <= 2) {
+            this.value = "+38 ";
+        }
+    });
+
+    
+    phoneInput.addEventListener("keydown", function (event) {
+        if (event.key === "Backspace") {
+            let value = this.value.replace(/\D/g, "");
+            if (value.length <= 3) {
+                event.preventDefault();
+                this.value = "+38 ";
+            } else {
+                value = value.slice(0, -1);
+                this.value = formatPhone(value);
+                event.preventDefault();
+            }
+        }
+    });
+
+    
+    function updateFields() {
+        const selectedCity = citySelect.value;
+        const selectedDelivery = deliverySelect.value;
+
+        // Очищення списку оплати
+        paymentSelect.innerHTML = "";
+
+        if (selectedDelivery === "pickup") {
+            
+            branchSelect.innerHTML = "<option selected>Академіка Кримського 3</option>";
+            branchSelect.disabled = true;
+            deliveryIcon.classList.replace("fa-truck", "fa-store");
+
+            
+            paymentSelect.innerHTML = "<option selected>Оплата в магазині</option>";
+            paymentSelect.disabled = true;
+            paymentIcon.classList.replace("fa-credit-card", "fa-store");
+        } else if (selectedDelivery === "nova_poshta" && selectedCity === "Біла Церква") {
+            
+            branchSelect.innerHTML = "";
+            branchSelect.disabled = false;
+            deliveryIcon.classList.replace("fa-store", "fa-truck");
+
+            novaPoshtaBranches.forEach(branch => {
+                const option = document.createElement("option");
+                option.value = branch.name;
+                option.innerHTML = `<strong>${branch.name}</strong> - ${branch.address} (Закривається о ${branch.closing})`;
+                branchSelect.appendChild(option);
+            });
+
+            
+            const paymentOptions = [
+                { value: "card_online", text: "Оплата банківською карткою на сайті" },
+                { value: "card_branch", text: "Оплата у відділенні Нової Пошти" },
+                { value: "cash_on_delivery", text: "Накладений платіж" }
+            ];
+
+            paymentOptions.forEach(option => {
+                const opt = document.createElement("option");
+                opt.value = option.value;
+                opt.textContent = option.text;
+                paymentSelect.appendChild(opt);
+            });
+
+            paymentSelect.disabled = false;
+            paymentIcon.classList.replace("fa-store", "fa-credit-card");
+        } else {
+            
+            branchSelect.innerHTML = "<option>Оберіть відділення</option>";
+            branchSelect.disabled = false;
+            deliveryIcon.classList.replace("fa-store", "fa-truck");
+
+            paymentSelect.innerHTML = "<option>Оберіть спосіб оплати</option>";
+            paymentSelect.disabled = false;
+            paymentIcon.classList.replace("fa-store", "fa-credit-card");
+        }
+    }
+
+    
+    deliverySelect.addEventListener("change", updateFields);
+    citySelect.addEventListener("change", updateFields);
+});
+
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .checkout-container {
+            display: flex;
+            flex-direction: row;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 1000px;
+            width: 90%;
+            gap: 20px;
+        }
+        .checkout-form {
+            flex: 1;
+            padding: 20px;
+        }
+        .order-summary {
+            flex: 1;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .separator {
+            border-top: 1px solid #ccc;
+            margin: 15px 0;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-group i {
+            margin-right: 10px;
+            color: #28a745;
+            font-size: 18px;
+        }
+        .form-group input, .form-group select {
+            border: none;
+            background: transparent;
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        
+        .checkout-button {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .checkout-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .checkout-button:active {
+            background-color: #1e7e34;
+            transform: scale(0.98);
+        }
+
+        .paw-back-icon {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  font-size: 28px;
+  color: #4caf50;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.paw-back-icon:hover {
+  transform: scale(1.15);
+  color: #388e3c;
+}
+
+.paw-back-icon .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 10px;
+  position: absolute;
+  z-index: 1;
+  top: 110%;
+  left: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+}
+
+.paw-back-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2>Оформлення замовлення</h2>
+            <form action="/submit-order" method="POST">
+                <!-- Поле ПІБ -->
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="fullName" required placeholder="Шаргородський Денис Костянтинович">
+                </div>
+            
+                <!-- Поле Телефон -->
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" name="phone" required placeholder="+38 (000) 000-00-00">
+                </div>
+            
+                <!-- Вибір способу доставки -->
+                <div class="form-group">
+                    <i id="delivery-icon" class="fas fa-truck"></i>
+                    <select name="deliveryMethod" id="deliveryMethod" required>
+                        <option value="pickup">Самовивіз з магазину (Біла Церква)</option>
+                        <option value="nova_poshta">Доставка Новою Поштою</option>
+                    </select>
+                </div>
+            
+                <!-- Вибір міста -->
+                <div class="form-group">
+                    <i class="fas fa-city"></i>
+                    <select name="city" id="city" required>
+                        <option value="Київ">Київ</option>
+                        <option value="Біла Церква">Біла Церква</option>
+                    </select>
+                </div>
+            
+                <div class="separator"></div>
+            
+                <!-- Поле вибору відділення -->
+                <div class="form-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <select name="branch" id="branch" required>
+                        <option>Оберіть відділення</option>
+                    </select>
+                </div>
+            
+                <!-- Поле вибору способу оплати -->
+                <div class="form-group">
+                    <i id="payment-icon" class="fas fa-credit-card"></i>
+                    <select name="paymentMethod" id="paymentMethod" required>
+                        <option value="">Оберіть спосіб оплати</option>
+                    </select>
+                </div>
+            
+                <!-- Кнопка оформлення замовлення -->
+                <button type="submit" class="checkout-button">Оформити замовлення</button>
+            </form>
+            
+                
+                
+                
+            
+        </div>
+
+        <a href="{{ url_for('catalog.index') }}" class="paw-back-icon">
+            <i class="fas fa-paw"></i>
+            <span class="tooltip-text">На головну</span>
+          </a> 
+
+        <div class="order-summary">
+            <h2 style="margin-top: 0;">Ваше замовлення</h2>
+            <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+              {% for item in cart %}
+                <div class="order-item" style="display: flex; gap: 15px; margin-bottom: 15px; background: #fff; padding: 12px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.06);">
+                  <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                  <div style="flex-grow: 1;">
+                    <h3 style="margin: 0; font-size: 17px; font-weight: 600;">{{ item.name }}</h3>
+                    <p style="margin: 4px 0; font-size: 14px; color: #555;">{{ item.description }}</p>
+                    <p style="margin: 0; font-size: 15px;"><strong>{{ item.price }} грн</strong> × {{ item.quantity }} = <strong>{{ item.total }} грн</strong></p>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          
+            <div style="text-align: right; font-size: 18px; font-weight: bold; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+              Загальна сума: {{ total_price }} грн
+            </div>
+          </div>
+          
+
+    </div>
+</body>
+</html>

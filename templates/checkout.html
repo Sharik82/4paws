@@ -29,7 +29,7 @@
             </tr>
         </thead>
         <tbody id="cartBody">
-            <!-- Товари будуть вставлятися сюди -->
+            
         </tbody>
     </table>
 
@@ -44,9 +44,9 @@
             const clearCartBtn = document.getElementById("clearCart");
 
             try {
-                // Отримуємо кошик з сервера
+                
                 const response = await fetch("/api/cart");
-                const cart = await response.json();
+                const cart = await response.json(); 
 
                 if (cart.length === 0) {
                     cartBody.innerHTML = '<tr><td colspan="4" class="empty-cart">Кошик порожній</td></tr>';
@@ -79,7 +79,7 @@
             clearCartBtn.addEventListener("click", async () => {
                 try {
                     await fetch("/api/cart/clear", { method: "POST" });
-                    location.reload(); // Перезавантажуємо сторінку
+                    location.reload(); 
                 } catch (error) {
                     console.error("Помилка очищення кошика:", error);
                 }

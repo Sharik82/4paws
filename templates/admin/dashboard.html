@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель | Адмін-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .sidebar ul li ul.submenu {
+            display: none;
+            list-style: none;
+            padding-left: 25px;
+            background: #219150;
+        }
+
+        .sidebar ul li:hover ul.submenu {
+            display: block;
+        }
+
+        .sidebar ul li ul.submenu li a {
+            font-size: 14px;
+            padding: 10px 20px;
+            display: block;
+            color: #fff;
+            background: #219150;
+        }
+
+        .sidebar ul li ul.submenu li a:hover {
+            background: #1a7f43;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>4 Paws Admin</h2>
+        <ul>
+            <li><a href="{{ url_for('admin.admin_dashboard') }}"><i class="fas fa-chart-line"></i> Панель</a></li>
+
+            <li>
+                <a href="#"><i class="fas fa-box-open"></i> Товари <i class="fas fa-caret-down" style="margin-left:auto;"></i></a>
+                <ul class="submenu">
+                    <li><a href="{{ url_for('admin.admin_products') }}">Категорії</a></li>
+                    <li><a href="{{ url_for('admin.products_table') }}">Усі товари</a></li>
+                    <li><a href="{{ url_for('admin.add_product') }}">+ Додати товар</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{{ url_for('admin.admin_orders') }}"><i class="fas fa-shopping-cart"></i> Замовлення</a></li>
+            <li><a href="{{ url_for('admin.admin_users') }}"><i class="fas fa-users"></i> Користувачі</a></li>
+            <li><a href="{{ url_for('admin.admin_settings') }}"><i class="fas fa-cogs"></i> Налаштування</a></li>
+            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Вийти</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h1>Панель</h1>
+        <p>Тут буде контент для вкладки "Панель".</p>
+    </div>
+</body>
+</html>

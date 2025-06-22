@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Вхід</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+    .registration-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .registration-form img {
+      width: 60px;
+      margin-bottom: 20px;
+    }
+    .registration-form input {
+      width: calc(100% - 20px);
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .registration-form .main-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .create-account {
+      margin-top: 15px;
+    }
+    .create-account a {
+      color: #0073e6;
+      text-decoration: none;
+    }
+    .flash-messages {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 15px;
+      color: red;
+      font-weight: bold;
+    }
+
+    .paw-back-icon {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  font-size: 28px;
+  color: #4caf50;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.paw-back-icon:hover {
+  transform: scale(1.15);
+  color: #388e3c;
+}
+
+.paw-back-icon .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 10px;
+  position: absolute;
+  z-index: 1;
+  top: 110%;
+  left: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+}
+
+.paw-back-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.create-account-links {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  animation: fadeIn 0.8s ease;
+}
+
+.create-account-links span {
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.link-button {
+  color: #2ea043;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: rgba(46, 160, 67, 0.06);
+}
+
+.link-button:hover {
+  color: #1c7f36;
+  background-color: rgba(46, 160, 67, 0.12);
+  transform: translateY(-1px);
+  border-color: #2ea043;
+  box-shadow: 0 2px 6px rgba(46, 160, 67, 0.15);
+}
+
+.link-button i {
+  font-size: 16px;
+  animation: paw-bounce 1.5s infinite;
+}
+
+@keyframes paw-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
+</head>
+<body>
+
+  <a href="{{ url_for('auth.register') }}" class="paw-back-icon">
+    <i class="fas fa-paw"></i>
+    <span class="tooltip-text">До реєстрації</span>
+  </a>  
+
+  <form method="POST" action="{{ url_for('auth.login') }}" class="registration-form" id="login-form">
+    <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Logo">
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <input type="text" placeholder="Імʼя користувача" name="username" required>
+    <input type="password" placeholder="Пароль" name="password" required>
+
+    <button class="main-button" type="submit">Увійти</button>
+
+    <div class="create-account-links">
+      <span>Не маєте акаунту?</span>
+      <a href="{{ url_for('auth.register') }}" class="link-button">
+        <i class="fas fa-paw"></i> Зареєструватися
+      </a>
+    </div>
+  </form>
+
+</body>
+</html>

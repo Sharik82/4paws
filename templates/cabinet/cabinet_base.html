@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Кабінет{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="cabinet-container">
+    <div class="sidebar">
+        <h3>Мій Кабінет</h3>
+        <ul>
+            <li><a href="{{ url_for('cabinet.profile') }}"><i class="fas fa-user"></i> Профіль</a></li>
+            <li><a href="{{ url_for('cabinet.orders') }}"><i class="fas fa-box"></i> Мої замовлення</a></li>
+            <li><a href="{{ url_for('cabinet.payments') }}"><i class="fas fa-wallet"></i> Методи оплати</a></li>
+            <li><a href="{{ url_for('cabinet.settings') }}"><i class="fas fa-cog"></i> Налаштування</a></li>
+            <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Вийти</a></li>
+            <li><a href="{{ url_for('cabinet.favorites') }}"><i class="fas fa-heart"></i> Обране</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    // Пошук товарів
+
     $('#search').on('input', function() {
         var searchText = $(this).val().toLowerCase();
         $('.product').each(function() {
@@ -12,12 +12,10 @@ $(document).ready(function() {
         });
     });
 
-    // Додавання до корзини
     $('.add-to-cart').on('click', function() {
         alert('Товар додано до корзини!');
     });
 
-    // Анімації при наведенні на товар
     $('.product').hover(function() {
         $(this).css('transform', 'scale(1.1)');
     }, function() {

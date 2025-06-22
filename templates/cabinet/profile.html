@@ -185,8 +185,8 @@
         <div class="sidebar">
             <h3>Мій Кабінет</h3>
             <ul>
-                <li><a href="profile.html"><i class="fas fa-user"></i> Профіль</a></li>
-                <li><a href="orders.html"><i class="fas fa-box"></i> Мої замовлення</a></li>
+                <li><a href="{{ url_for('cabinet.profile') }}"><i class="fas fa-user"></i> Профіль</a></li>
+                <li><a href="{{ url_for('cabinet.orders') }}"><i class="fas fa-box"></i> Мої замовлення</a></li>
                 <li><a href="#"><i class="fas fa-wallet"></i> Методи оплати</a></li>
                 <li><a href="#"><i class="fas fa-cog"></i> Налаштування</a></li>
                 <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> Вийти</a></li>
@@ -195,15 +195,14 @@
 
 
     <div class="container">
-    <!-- Привітання -->
     <div class="greeting" id="greeting">Добрий день!</div>
 
     <div class="profile-header">
         <img id="profile-pic" src="https://via.placeholder.com/120" alt="Фото профілю">
         <input type="file" id="upload-pic" accept="image/*" style="display: none;">
         <div>
-            <h1 id="username">Ім'я Користувача</h1>
-            <p id="user-email">user@email.com</p>
+            <h1 id="username">{{ user.username }}</h1>
+            <p id="user-email">{{ user.email if user.email else 'email не вказано' }}</p>
         </div>
     </div>
 
@@ -211,10 +210,10 @@
         <h2>Особисті дані</h2>
         <div class="info">
             <div>
-                <p><strong>Ім'я:</strong> <span id="first-name">Іван</span></p>
-                <p><strong>Прізвище:</strong> <span id="last-name">Іванов</span></p>
-                <p><strong>Телефон:</strong> <span id="phone">+380 96 123 4567</span></p>
-                <p><strong>Email:</strong> <span id="email">user@email.com</span></p>
+                <p><strong>Ім'я:</strong> {{ user.username }}</p>
+                <p><strong>Прізвище:</strong> {{ user.lastname }}</p>
+                <p><strong>Телефон:</strong> {{ user.phone }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>                
             </div>
             <button class="edit-icon" onclick="editSection('first-name', 'last-name', 'phone', 'email', 'username')">
                 <i class="fas fa-pen"></i>
@@ -222,11 +221,11 @@
         </div>
     </div>
 
-    <button class="logout-btn">Вийти з акаунту</button>
+    <a href="{{ url_for('auth.logout') }}" class="logout-btn">Вийти з акаунту</a>
+
 </div>
 
 <script>
-    // Привітання залежно від часу доби
     function updateGreeting() {
         const greetingElement = document.getElementById('greeting');
         const now = new Date();
@@ -246,7 +245,6 @@
         greetingElement.innerText = greeting;
     }
 
-    // Редагування даних профілю
     function editSection(...fields) {
         fields.forEach(field => {
             const element = document.getElementById(field);
