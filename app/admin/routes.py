@@ -173,7 +173,6 @@ def edit_product(product_id):
         product.name = request.form.get('name')
         product.price = float(request.form.get('price'))
         product.category = request.form.get('category')
-        product.weight = request.form.get('weight')
         product.show_on_main = bool(request.form.get('show_on_main'))
         product.main_category = request.form.get('main_category')
         product.sub_category = request.form.get('sub_category')

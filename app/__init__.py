@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -6,42 +5,31 @@ from flask_session import Session
 from dotenv import load_dotenv
 from datetime import timedelta
 
-
 db = SQLAlchemy()
 
 def create_app():
-    
     load_dotenv()
 
-    
     app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-    
-    app.permanent_session_lifetime = timedelta(days=30)  # Конфіг на місяць
-
-    
+    # 🔒 Секретний ключ і тривалість сесії
     app.secret_key = os.getenv("SECRET_KEY")
+    app.permanent_session_lifetime = timedelta(days=30)
 
-    
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.abspath('instance/users.db')}"
-
-    
-    app.config["SQLALCHEMY_BINDS"] = {
-        'products': f"sqlite:///{os.path.abspath('instance/products.db')}"
-    }
-
+    # 📦 Підключення до PostgreSQL
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://denis@localhost/4paws_db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    
+    # ⚙️ Налаштування сесій
     app.config["SESSION_TYPE"] = "filesystem"
     app.config["SESSION_PERMANENT"] = True
-    app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)  
+    app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
 
-    #  Ініціалізація
+    # 🧩 Ініціалізація
     Session(app)
     db.init_app(app)
 
-    #  Blueprints
+    # 🔗 Реєстрація blueprints
     from app.auth.routes import auth_bp
     from app.catalog.routes import catalog_bp
     from app.admin.routes import admin_bp

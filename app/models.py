@@ -11,15 +11,13 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
 
 #Обране
-class Favorite(db.Model):  # зберігається в users.db
+class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     product_id = db.Column(db.Integer, nullable=False)
 
 #Товар
 class Product(db.Model):
-    __bind_key__ = 'products'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -37,10 +35,10 @@ class Product(db.Model):
     sub_category = db.Column(db.String(100), nullable=True)
     show_on_main = db.Column(db.Boolean, default=False)
 
-    #Звʼязок з таблицею фасувань
+    #Звʼязок з фасуваннями
     weights = db.relationship('ProductWeight', backref='product', lazy=True)
 
-    # Для API 
+    #Словник для API
     def to_dict(self):
         return {
             "id": self.id,
@@ -61,7 +59,7 @@ class Product(db.Model):
             "show_on_main": self.show_on_main
         }
 
-    #JSON-формат фасувань для шаблону
+    #JSON для шаблону
     @property
     def weights_json(self):
         return [
@@ -72,10 +70,8 @@ class Product(db.Model):
             } for w in self.weights
         ]
 
-#Фасування (вага + ціна)
+#Фасування
 class ProductWeight(db.Model):
-    __bind_key__ = 'products'
-
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     amount = db.Column(db.String(20))  
