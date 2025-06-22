@@ -17,7 +17,7 @@ def create_app():
     app.permanent_session_lifetime = timedelta(days=30)
 
     # 📦 Підключення до PostgreSQL
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://denis@localhost/4paws_db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # ⚙️ Налаштування сесій
