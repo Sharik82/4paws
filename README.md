@@ -36,3 +36,10 @@ local development they can be put into a `.env` file):
   gunicorn server:app
   ```
 
+## Deploying to Render
+1. Push the repository to GitHub.
+2. Create a new **Web Service** on [Render](https://render.com/).
+3. Set the required environment variables from the section above.
+4. Render will install the dependencies and run the command from `Procfile` which
+   starts the app via `gunicorn server:app`.
+
