@@ -8,3 +8,29 @@ Developed using Flask, SQLite and Jinja2.
 - Adding products to the cart
 - Placing an order
 
+## Installation
+1. Create and activate a virtual environment.
+2. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Environment variables
+The application expects a few variables to be present in the environment (for
+local development they can be put into a `.env` file):
+
+- `SECRET_KEY` – secret key used by Flask for sessions.
+- `DATABASE_URL` – PostgreSQL connection string.
+- `LIQPAY_PUBLIC_KEY` – LiqPay API public key.
+- `LIQPAY_PRIVATE_KEY` – LiqPay API private key.
+
+## Running the app
+- Development server:
+  ```bash
+  python server.py
+  ```
+- Production example with Gunicorn:
+  ```bash
+  gunicorn server:app
+  ```
+
