@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
-from app.models import Product
+from app.models import Product, Category
 from app.catalog.orders_models import Order
 from app import db
+from sqlalchemy import or_
 import json
 
 catalog_bp = Blueprint('catalog', __name__)
@@ -184,102 +185,19 @@ def clear_cart():
     return jsonify({"message": "Кошик очищено"})
 
 
-@catalog_bp.route('/catalog/dogs/dogcatalog', endpoint='dogcatalog')
-def dog_food():
-    products = Product.query.filter_by(sub_category='dogcatalog').all()
-    return render_template('catalog/dogs/dogcatalog.html', products=products)
 
-from flask import render_template
-from app.models import Product  
 
 @catalog_bp.route('/product/<int:product_id>')
 def product_page(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('products/product.html', product=product)
 
-from flask import render_template
-from app.models import Product
-
-#Собаки — підкатегорії
-@catalog_bp.route('/catalog/dogs/treats')
-def dog_treats():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_treats").all()
-    return render_template('catalog/dogs/dog_treats.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/toys')
-def dog_toys():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_toys").all()
-    return render_template('catalog/dogs/dog_toys.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/sets')
-def dog_sets():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_sets").all()
-    return render_template('catalog/dogs/dog_sets.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/gear')
-def dog_gear():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_gear").all()
-    return render_template('catalog/dogs/dog_gear.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/supplements')
-def dog_supplements():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_supplements").all()
-    return render_template('catalog/dogs/dog_supplements.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/meds')
-def dog_meds():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_meds").all()
-    return render_template('catalog/dogs/dog_meds.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/carriers')
-def dog_carriers():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_carriers").all()
-    return render_template('catalog/dogs/dog_carriers.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/beds')
-def dog_beds():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_beds").all()
-    return render_template('catalog/dogs/dog_beds.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/clothes')
-def dog_clothes():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_clothes").all()
-    return render_template('catalog/dogs/dog_clothes.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/accessories')
-def dog_accessories():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_accessories").all()
-    return render_template('catalog/dogs/dog_accessories.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/bowls')
-def dog_bowls():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_bowls").all()
-    return render_template('catalog/dogs/dog_bowls.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/care')
-def dog_care():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_care").all()
-    return render_template('catalog/dogs/dog_care.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/toilets')
-def dog_toilets():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_toilets").all()
-    return render_template('catalog/dogs/dog_toilets.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/cleaners')
-def dog_cleaners():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_cleaners").all()
-    return render_template('catalog/dogs/dog_cleaners.html', products=products)
-
-@catalog_bp.route('/catalog/dogs/smart')
-def dog_smart():
-    products = Product.query.filter_by(main_category="Собаки", sub_category="dog_smart").all()
-    return render_template('catalog/dogs/dog_smart.html', products=products)
-
-from flask import request, jsonify, url_for
-from app.models import Product
-from app import db
-from sqlalchemy import or_
+# Універсальна категорія
+@catalog_bp.route('/category/<main_category>/<sub_category>')
+def show_category(main_category, sub_category):
+    category = Category.query.filter_by(slug=sub_category).first_or_404()
+    products = Product.query.filter_by(category_id=category.id).all()
+    return render_template('catalog/category.html', products=products, main_category=main_category, sub_category=sub_category)
 
 @catalog_bp.route('/search')
 def search():
