@@ -1,468 +1,134 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimeal - Товар для котів</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    
-</head>
-<body>
-    <header class="header">
-        <div class="header-left">
-            <a href="{{ url_for('catalog.index') }}" class="logo">
-                <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Лого">
-                <span class="logo-text">4 Paws</span>
-            </a>
-    
-            <!-- Поле пошуку -->
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Пошук..." oninput="searchProducts()">
-                <button type="button"><i class="fas fa-search"></i></button>
-                <div id="searchResults" class="search-results"></div>
-            </div>
-        </div>
-    
-        <!-- Меню категорій -->
-        <nav class="nav">
-            <a href="#"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cow-solid.svg') }}" alt="Агро"> Агро</a>
-            <a href="{{ url_for('catalog.dog_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dog-solid.svg') }}" alt="Собаки"> Собаки</a>
-            <a href="{{ url_for('catalog.cat_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cat-solid.svg') }}" alt="Коти"> Коти</a>
-            <a href="{{ url_for('catalog.rodents_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/frog-solid.svg') }}" alt="Гризуни"> Гризуни</a>
-            <a href="{{ url_for('catalog.fish_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/fish-solid.svg') }}" alt="Риби"> Риби</a>
-            <a href="{{ url_for('catalog.dove_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dove-solid.svg') }}" alt="Птахи"> Птахи</a>
-            <a href="{{ url_for('catalog.snake_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/staff-snake-solid.svg') }}" alt="Рептилії"> Рептилії</a>
-        </nav>
-    
-        <!-- Меню користувача -->
-        <div class="user-menu">
-            <button class="menu-btn">
-                <i class="fas fa-user"></i>
-            </button>
-            <button id="cartButton" class="icon-btn cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-            </button>
-            <button class="icon-btn night-mode-toggle" onclick="toggleNightMode()">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="icon-btn lang-switch" onclick="toggleLanguage()">
-                <i class="fas fa-language"></i>
-            </button>
-        </div>
+{% extends 'base.html' %}
 
-    </header>
+{% block title %}4Paws{% endblock %}
 
-            <div class="dashboard-menu" id="dashboardMenu">
-                <div class="dashboard-header">
-                    <h2>Особистий кабінет</h2>
-                    <p id="greeting"></p>
-                </div>
-                <ul class="menu-items">
-                    <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-user"></i>Мій профіль</a></li>
-                    <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-box"></i>Мої замовлення</a></li>
-                    <li><a href="#"><i class="icon fas fa-map-marker-alt"></i>Адреси доставки</a></li>
-                    <li><a href="#"><i class="icon fas fa-wallet"></i>Баланс гаманця</a></li>
-                    <li><a href="#"><i class="icon fas fa-credit-card"></i>Способи оплати</a></li>
-                    <li><a href="#"><i class="icon fas fa-sign-out-alt"></i>Вихід</a></li>
-                </ul>
-            </div>
-        </nav>
-    
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
 
-    <div id="notification" class="notification"></div>
-
-    <div id="cartMenu" class="cart-menu">
-        <button class="close-cart" onclick="closeCart()">×</button>
-        <h3>Ваш кошик</h3>
-        <div id="cartItems" class="cart-items"></div>
-        <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
-        <button class="checkout-btn" onclick="submitCart()">Оформити замовлення</button>
+{% block content %}
+<div class="dashboard-menu" id="dashboardMenu">
+    <div class="dashboard-header">
+        <h2>Особистий кабінет</h2>
+        <p id="greeting"></p>
     </div>
+    <ul class="menu-items">
+        <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-user"></i>Мій профіль</a></li>
+        <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-box"></i>Мої замовлення</a></li>
+        <li><a href="#"><i class="icon fas fa-map-marker-alt"></i>Адреси доставки</a></li>
+        <li><a href="#"><i class="icon fas fa-wallet"></i>Баланс гаманця</a></li>
+        <li><a href="#"><i class="icon fas fa-credit-card"></i>Способи оплати</a></li>
+        <li><a href="#"><i class="icon fas fa-sign-out-alt"></i>Вихід</a></li>
+    </ul>
+</div>
+<div id="notification" class="notification"></div>
+<div id="cartMenu" class="cart-menu">
+    <button class="close-cart" onclick="closeCart()">×</button>
+    <h3>Ваш кошик</h3>
+    <div id="cartItems" class="cart-items"></div>
+    <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
+    <button class="checkout-btn" onclick="submitCart()">Оформити замовлення</button>
+</div>
 
-
-    <div class="banner-section">
-        <!-- Лівий великий банер-слайдер -->
-        <div class="banner-slider">
-          <div class="slides">
+<div class="banner-section">
+    <div class="banner-slider">
+        <div class="slides">
             <div class="slide active">
-              <img src="{{ url_for('static', filename='img/banner/banner1.jpg') }}" alt="Банер 1">
+                <img src="{{ url_for('static', filename='img/banner/banner1.jpg') }}" alt="Банер 1">
             </div>
             <div class="slide">
-              <img src="{{ url_for('static', filename='img/banner/banner2.jpg') }}" alt="Банер 2">
+                <img src="{{ url_for('static', filename='img/banner/banner2.jpg') }}" alt="Банер 2">
             </div>
             <div class="slide">
-              <img src="{{ url_for('static', filename='img/banner/banner3.jpg') }}" alt="Банер 3">
+                <img src="{{ url_for('static', filename='img/banner/banner3.jpg') }}" alt="Банер 3">
             </div>
-          </div>
-          <button class="slider-btn prev" onclick="changeSlide(-1)">‹</button>
-          <button class="slider-btn next" onclick="changeSlide(1)">›</button>
         </div>
-      
-        <!-- Праві два банери -->
-        <div class="banner-side">
-          <div class="small-banner">
+        <button class="slider-btn prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slider-btn next" onclick="changeSlide(1)">›</button>
+    </div>
+    <div class="banner-side">
+        <div class="small-banner">
             <img src="{{ url_for('static', filename='img/banner/banner_side1.png') }}" alt="Банер малий 1">
-          </div>
-          <div class="small-banner">
+        </div>
+        <div class="small-banner">
             <img src="{{ url_for('static', filename='img/banner/banner_side2.png') }}" alt="Банер малий 2">
-          </div>
         </div>
-      </div>
-      
-  <div class="container">
-    <!-- Заголовок -->
+    </div>
+</div>
+
+<div class="container">
     <div class="section-header">
-      <span>Акції та знижки</span>
-      <a href="discounted-products.html" class="arrow-link">
-        Всі товари зі знижками
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 1 0-.708L13.207 5.5H3.5a.5.5 0 0 1 0-1h9.707L10.854 3.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
-        </svg>
-      </a>
+        <span>Акції та знижки</span>
+        <a href="discounted-products.html" class="arrow-link">
+            Всі товари зі знижками
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 1 0-.708L13.207 5.5H3.5a.5.5 0 0 1 0-1h9.707L10.854 3.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+            </svg>
+        </a>
     </div>
 
-    <!-- Сітка товарів -->
     <div class="product-grid">
-      <!-- Товар -->
-      <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/5.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для собак Brit Premium Sport 3 кг - курка</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">699.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/5.webp') }}"
-                onclick="addToCart('Сухий корм для собак Brit Premium Sport 3 кг - курка', 699.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="{{ url_for('catalog.pr2_page') }}" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
-                </a>                
+        <!-- Example product card -->
+        <div class="product-card">
+            <div class="discount">-10%</div>
+            <img src="{{ url_for('static', filename='img/Dog-css/5.webp') }}" alt="Товар">
+            <div class="product-info">
+                <h3>Сухий корм для собак Brit Premium Sport 3 кг - курка</h3>
+                <div class="price-section">
+                    <span class="old-price">630.00 грн</span>
+                    <span class="new-price">699.00 грн</span>
+                </div>
+                <div class="action-buttons">
+                    <button class="buy-button" data-image="{{ url_for('static', filename='img/Dog-css/5.webp') }}" onclick="addToCart('Сухий корм для собак Brit Premium Sport 3 кг - курка', 699.00, this.getAttribute('data-image'))">Купити</button>
+                    <a href="{{ url_for('catalog.pr2_page') }}" class="info-button" title="Деталі товару">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip">Детальна інформація про товар</span>
+                    </a>
+                </div>
             </div>
         </div>
+        <!-- Additional product cards would go here -->
     </div>
-    
-      <div class="product-card">
-        <div class="discount">-15%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/16.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Вологий корм для собак Royal Canin Hepatic 420 г</h3>
-            <div class="price-section">
-                <span class="old-price">155.00 грн</span>
-                <span class="new-price">131.75 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/16.webp') }}"
-                onclick="addToCart('Вологий корм для собак Royal Canin Hepatic 420 г', 131.75, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="{{ url_for('catalog.pr3_page') }}" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+
+    <div class="category-carousel">
+        <h2>Популярні категорії</h2>
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="categoryTrack">
+                <a href="{{ url_for('catalog.dogcatalog') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/Dog1.webp') }}" alt="Корм для собак">
+                    <h3>Корм для собак</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-15%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/11.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Вологий корм для цуценят Royal Canin Gastrointestinal</h3>
-            <div class="price-section">
-                <span class="old-price">130.00 грн</span>
-                <span class="new-price">110.50 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/11.webp') }}"
-                onclick="addToCart('Вологий корм для цуценят Royal Canin Gastrointestinal', 110.50, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="{{ url_for('catalog.pr4_page') }}" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_treats') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/test1.webp') }}" alt="Ласощі для собак">
+                    <h3>Ласощі для собак</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-28%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/8.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для цуценят та молодих собак Pro Plan Puppy</h3>
-            <div class="price-section">
-                <span class="old-price">816.00 грн</span>
-                <span class="new-price">587.52 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/8.webp') }}"
-                onclick="addToCart('Сухий корм для цуценят та молодих собак Pro Plan Puppy', 587.52, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="{{ url_for('catalog.pr5_page') }}" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_toys') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/gamedog.webp') }}" alt="Іграшки для собак">
+                    <h3>Іграшки для собак</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-30%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/9.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для собак Royal Canin Chihuahua Adult 500 г </h3>
-            <div class="price-section">
-                <span class="old-price">250.00 грн</span>
-                <span class="new-price">175.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/9.webp') }}"
-                onclick="addToCart('Сухий корм для собак Royal Canin Chihuahua Adult 500 г', 175.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="{{ url_for('catalog.pr6_page') }}" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_sets') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/thingsdog.webp') }}" alt="Набори для собак">
+                    <h3>Набори для собак</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/7.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для цуценят Royal Canin Medium Puppy 15 кг (Курка стандарт)</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">570.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/7.webp') }}"
-                onclick="addToCart('Сухий корм для цуценят Royal Canin Medium Puppy 15 кг', 570.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_gear') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/amunitiondog.webp') }}" alt="Амуніція для собак">
+                    <h3>Амуніція для собак</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/12.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для цуценят Royal Canin Yorkshire Puppy 500 г (Індичка)</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">570.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/12.webp') }}"
-                onclick="addToCart('Сухий корм для цуценят Royal Canin Yorkshire Puppy 500 г (Індичка)', 570.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_supplements') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/vitamindog.webp') }}" alt="Вітаміни та добавки">
+                    <h3>Вітаміни та добавки</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/10.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для цуценят Hill’s Science Plan Puppy Medium Breed 2,5 кг</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">570.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/10.webp') }}"
-                onclick="addToCart('Сухий корм для цуценят Hill’s Science Plan Puppy Medium Breed 2,5 кг', 570.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/13.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Сухий корм для дорослих собак великих порід Optimeal 12 кг</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">570.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/13.webp') }}"
-                onclick="addToCart('Сухий корм для дорослих собак великих порід Optimeal 12 кг', 570.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="discount">-10%</div>
-        <img src="{{ url_for('static', filename='img/Dog-css/15.webp') }}" alt="Товар">
-        <div class="product-info">
-            <h3>Вологий корм для собак при харчовій алергії Pro Plan Veterinary Diets</h3>
-            <div class="price-section">
-                <span class="old-price">630.00 грн</span>
-                <span class="new-price">570.00 грн</span>
-            </div>
-            <div class="action-buttons">
-                <button class="buy-button"
-                data-image="{{ url_for('static', filename='img/Dog-css/15.webp') }}"
-                onclick="addToCart('Вологий корм для собак при харчовій алергії Pro Plan Veterinary Diets', 570.00, this.getAttribute('data-image'))">
-                Купити
-                </button>
-                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltip">Детальна інформація про товар</span>
+                <a href="{{ url_for('catalog.dog_meds') }}" class="category-card">
+                    <img src="{{ url_for('static', filename='img/dogCategories/vetperdog.webp') }}" alt="Ветпрепарати для собак">
+                    <h3>Ветпрепарати для собак</h3>
                 </a>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
-<div class="category-carousel">
-    <h2>Популярні категорії</h2>
-    <div class="carousel-wrapper">
-      <div class="carousel-track" id="categoryTrack">
-  
-        <a href="{{ url_for('catalog.dogcatalog') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/Dog1.webp') }}" alt="Корм для собак">
-          <h3>Корм для собак</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_treats') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/test1.webp') }}" alt="Ласощі для собак">
-          <h3>Ласощі для собак</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_toys') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/gamedog.webp') }}" alt="Іграшки для собак">
-          <h3>Іграшки для собак</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_sets') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/thingsdog.webp') }}" alt="Набори для собак">
-          <h3>Набори для собак</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_gear') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/amunitiondog.webp') }}" alt="Амуніція для собак">
-          <h3>Амуніція для собак</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_supplements') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/vitamindog.webp') }}" alt="Вітаміни та добавки">
-          <h3>Вітаміни та добавки</h3>
-        </a>
-  
-        <a href="{{ url_for('catalog.dog_meds') }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/dogCategories/vetperdog.webp') }}" alt="Ветпрепарати для собак">
-          <h3>Ветпрепарати для собак</h3>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  </div>
-  </div>
-  
-
-</div>
-</div>
-
-
-<footer class="footer">
-    <div class="footer-content">
-        <!-- Контактна інформація -->
-        <div class="contact-info">
-            <h3><i class="fas fa-phone-alt"></i> Контактна інформація</h3>
-            <p><i class="fas fa-phone-alt"></i> 0 800 30 99 39 (безкоштовно)</p>
-            <p><i class="fas fa-phone-alt"></i> (044) 390 32 54</p>
-            <p><i class="fas fa-envelope"></i> info@4paws.com</p>
-        </div>
-
-        <!-- Рейтинг магазину -->
-        <div class="rating">
-            <h3>Рейтинг магазину: 4.98</h3>
-            <p>⭐⭐⭐⭐⭐ 1911 оцінок</p>
-        </div>
-
-        <!-- Соціальні мережі -->
-        <div class="social-media">
-            <h3>Ми в соцмережах</h3>
-            <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
-        </div>
-        
-        <!-- Додаткові посилання -->
-        <div class="extra-links">
-            <h3>Корисна інформація</h3>
-            <a href="#">Адреси роздрібних магазинів</a>
-            <a href="#">Нові товари</a>
-            <a href="#">Товари зі знижкою</a>
-            <a href="#">Корми на вагу</a>
-        </div>
-    </div>
-
-    <div class="payment-methods">
-        <h3>Способи оплати</h3>
-        <div class="payment-icons">
-            <img src="{{ url_for('static', filename='img/header/visa-svgrepo-com.svg') }}" alt="Visa">
-            <img src="{{ url_for('static', filename='img/header/mastercard-svgrepo-com.svg') }}" alt="Mastercard">
-            <img src="{{ url_for('static', filename='img/header/google-pay-brands-solid.svg') }}" alt="Google Pay">
-            <img src="{{ url_for('static', filename='img/header/apple-pay-brands-solid.svg') }}" alt="Apple Pay">
-        </div>
-    </div>
-</div>
-    
-</div>
-
-    <!-- Підвал -->
-    <div class="footer-bottom">
-        <p>© 2005 - 2025 Зоомагазин ® Всі права захищені</p>
-        <p>Умови використання сайту | Публічна оферта | Повернення товару</p>
-    </div>
-</footer>
-
-
-
-
+{% block scripts %}
+{{ super() }}
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-</body>
-</html>
-
-
-
+{% endblock %}

@@ -14,11 +14,8 @@ Developed using Flask, PostgreSQL and Jinja2.
    ```bash
    pip install -r requirements.txt
    ```
-3. Initialize the database tables and populate categories (for a fresh
-   PostgreSQL database):
-   ```bash
-   python populate_categories.py
-   ```
+3. Initialize the database tables. The tables will be created automatically on
+   first run thanks to `db.create_all()` inside the app factory.
 
 ## Environment variables
 The application expects a few variables to be present in the environment (for
