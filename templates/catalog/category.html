@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ sub_category|replace('_', ' ')|title }} - 4 Paws</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/header/logo_large_purple.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/catalog.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <a href="{{ url_for('catalog.index') }}" class="logo">
+                <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Лого">
+                <span class="logo-text">4 Paws</span>
+            </a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Пошук..." oninput="searchProducts()" autocomplete="off">
+                <button type="button"><i class="fas fa-search"></i></button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="#"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cow-solid.svg') }}" alt="Агро"> Агро</a>
+            <a href="{{ url_for('catalog.dog_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dog-solid.svg') }}" alt="Собаки"> Собаки</a>
+            <a href="{{ url_for('catalog.cat_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cat-solid.svg') }}" alt="Коти"> Коти</a>
+            <a href="{{ url_for('catalog.rodents_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/frog-solid.svg') }}" alt="Гризуни"> Гризуни</a>
+            <a href="{{ url_for('catalog.fish_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/fish-solid.svg') }}" alt="Риби"> Риби</a>
+            <a href="{{ url_for('catalog.dove_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dove-solid.svg') }}" alt="Птахи"> Птахи</a>
+            <a href="{{ url_for('catalog.snake_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/staff-snake-solid.svg') }}" alt="Рептилії"> Рептилії</a>
+        </nav>
+        <div class="user-menu">
+            <button class="menu-btn"><i class="fas fa-user"></i></button>
+            <button id="cartButton" class="icon-btn header-cart"><i class="fas fa-shopping-cart"></i></button>
+            <button class="icon-btn night-mode-toggle" onclick="toggleNightMode()"><i class="fas fa-moon"></i></button>
+            <button class="icon-btn lang-switch" onclick="toggleLanguage()"><i class="fas fa-language"></i></button>
+        </div>
+    </header>
+
+    <div id="notification" class="notification"></div>
+    <div id="cartMenu" class="cart-menu">
+        <button class="close-cart" onclick="closeCart()">×</button>
+        <h3>Ваш кошик</h3>
+        <div id="cartItems" class="cart-items"></div>
+        <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
+        <button class="checkout-btn" onclick="submitCart()">Оформити замовлення</button>
+    </div>
+
+    <div class="container">
+        <h1>{{ sub_category|replace('_', ' ')|title }}</h1>
+        <div class="products-grid">
+        {% for product in products %}
+            <a href="{{ url_for('catalog.product_page', product_id=product.id) }}"
+               class="product-card"
+               data-price="{{ product.price }}"
+               data-type="{{ product.characteristics }}"
+               data-brand="{{ product.brand }}"
+               data-category="{{ product.category }}"
+               data-weight="{{ product.weight }}">
+                <div class="favorite-icon"><i class="fas fa-heart"></i></div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="default-image">
+                    {% if product.gallery %}
+                        <img src="{{ url_for('static', filename=product.gallery.split(';')[0]) }}" alt="{{ product.name }} (hover)" class="hover-image">
+                    {% else %}
+                        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }} (hover)" class="hover-image">
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">
+                        {% if product.price is not none %}
+                        {{ '%.2f'|format(product.price) }} ₴
+                        {% else %}
+                        Ціну уточнюйте
+                        {% endif %}
+                    </p>
+                    <p class="stock-status">В наявності</p>
+                </div>
+                <div class="cart-icon" title="Додати в кошик" onclick="addToCart('{{ product.name }}', {{ product.price or 0 }}, '{{ url_for('static', filename=product.image) }}'); event.preventDefault();">
+                    <i class="fas fa-cart-plus"></i>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

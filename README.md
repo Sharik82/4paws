@@ -14,8 +14,16 @@ Developed using Flask, PostgreSQL and Jinja2.
    ```bash
    pip install -r requirements.txt
    ```
+
 3. Initialize the database tables. The tables will be created automatically on
    first run thanks to `db.create_all()` inside the app factory.
+
+3. Initialize the database tables and populate categories (for a fresh
+   PostgreSQL database):
+   ```bash
+   python populate_categories.py
+   ```
+
 
 ## Environment variables
 The application expects a few variables to be present in the environment (for
@@ -36,10 +44,13 @@ local development they can be put into a `.env` file):
   gunicorn server:app
   ```
 
+
 ## Deploying to Render
 1. Push the repository to GitHub.
 2. Create a new **Web Service** on [Render](https://render.com/).
 3. Set the required environment variables from the section above.
 4. Render will install the dependencies and run the command from `Procfile` which
    starts the app via `gunicorn server:app`.
+
+
 

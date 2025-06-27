@@ -16,6 +16,17 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, nullable=False)
     product_id = db.Column(db.Integer, nullable=False)
 
+# Категорія товарів
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    slug = db.Column(db.String(100), unique=True, nullable=False)
+    parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    parent = db.relationship('Category', remote_side=[id], backref='children')
+
+    def __repr__(self):
+        return f'<Category {self.name}>'
+
 #Товар
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +37,8 @@ class Product(db.Model):
     brand = db.Column(db.String(100), nullable=True)
     weight = db.Column(db.String(50), nullable=True)
     category = db.Column(db.String(100), nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category_rel = db.relationship('Category', backref='products')
     discount = db.Column(db.Integer, nullable=True)
     image = db.Column(db.String(255), nullable=True)
     gallery = db.Column(db.Text, nullable=True)
@@ -49,6 +62,7 @@ class Product(db.Model):
             "brand": self.brand,
             "weight": self.weight,
             "category": self.category,
+            "category_id": self.category_id,
             "discount": self.discount,
             "image": self.image,
             "gallery": self.gallery,

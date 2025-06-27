@@ -125,7 +125,129 @@
             </div>
         </div>
     </div>
+
+
+    <div class="product-card">
+        <div class="discount">-10%</div>
+        <img src="{{ url_for('static', filename='img/Dog-css/15.webp') }}" alt="Товар">
+        <div class="product-info">
+            <h3>Вологий корм для собак при харчовій алергії Pro Plan Veterinary Diets</h3>
+            <div class="price-section">
+                <span class="old-price">630.00 грн</span>
+                <span class="new-price">570.00 грн</span>
+            </div>
+            <div class="action-buttons">
+                <button class="buy-button"
+                data-image="{{ url_for('static', filename='img/Dog-css/15.webp') }}"
+                onclick="addToCart('Вологий корм для собак при харчовій алергії Pro Plan Veterinary Diets', 570.00, this.getAttribute('data-image'))">
+                Купити
+                </button>
+                <a href="Categories/Produkte/PR4.html" class="info-button" title="Деталі товару">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip">Детальна інформація про товар</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="category-carousel">
+    <h2>Популярні категорії</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="categoryTrack">
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dogcatalog') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/Dog1.webp') }}" alt="Корм для собак">
+          <h3>Корм для собак</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_treats') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/test1.webp') }}" alt="Ласощі для собак">
+          <h3>Ласощі для собак</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_toys') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/gamedog.webp') }}" alt="Іграшки для собак">
+          <h3>Іграшки для собак</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_sets') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/thingsdog.webp') }}" alt="Набори для собак">
+          <h3>Набори для собак</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_gear') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/amunitiondog.webp') }}" alt="Амуніція для собак">
+          <h3>Амуніція для собак</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_supplements') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/vitamindog.webp') }}" alt="Вітаміни та добавки">
+          <h3>Вітаміни та добавки</h3>
+        </a>
+  
+        <a href="{{ url_for('catalog.show_category', main_category='Собаки', sub_category='dog_meds') }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/dogCategories/vetperdog.webp') }}" alt="Ветпрепарати для собак">
+          <h3>Ветпрепарати для собак</h3>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  </div>
+  
+
+</div>
+</div>
+
+
+<footer class="footer">
+    <div class="footer-content">
+        <!-- Контактна інформація -->
+        <div class="contact-info">
+            <h3><i class="fas fa-phone-alt"></i> Контактна інформація</h3>
+            <p><i class="fas fa-phone-alt"></i> 0 800 30 99 39 (безкоштовно)</p>
+            <p><i class="fas fa-phone-alt"></i> (044) 390 32 54</p>
+            <p><i class="fas fa-envelope"></i> info@4paws.com</p>
+        </div>
+
+        <!-- Рейтинг магазину -->
+        <div class="rating">
+            <h3>Рейтинг магазину: 4.98</h3>
+            <p>⭐⭐⭐⭐⭐ 1911 оцінок</p>
+        </div>
+
+        <!-- Соціальні мережі -->
+        <div class="social-media">
+            <h3>Ми в соцмережах</h3>
+            <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
+        </div>
+        
+        <!-- Додаткові посилання -->
+        <div class="extra-links">
+            <h3>Корисна інформація</h3>
+            <a href="#">Адреси роздрібних магазинів</a>
+            <a href="#">Нові товари</a>
+            <a href="#">Товари зі знижкою</a>
+            <a href="#">Корми на вагу</a>
+        </div>
+    </div>
+
+    <div class="payment-methods">
+        <h3>Способи оплати</h3>
+        <div class="payment-icons">
+            <img src="{{ url_for('static', filename='img/header/visa-svgrepo-com.svg') }}" alt="Visa">
+            <img src="{{ url_for('static', filename='img/header/mastercard-svgrepo-com.svg') }}" alt="Mastercard">
+            <img src="{{ url_for('static', filename='img/header/google-pay-brands-solid.svg') }}" alt="Google Pay">
+            <img src="{{ url_for('static', filename='img/header/apple-pay-brands-solid.svg') }}" alt="Apple Pay">
+        </div>
+    </div>
+</div>
+    
+
 {% endblock %}
 
 {% block scripts %}
