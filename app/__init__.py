@@ -29,6 +29,10 @@ def create_app():
     Session(app)
     db.init_app(app)
 
+    # Ensure all tables exist on startup (handy for fresh deployments)
+    with app.app_context():
+        db.create_all()
+
     # 🔗 Реєстрація blueprints
     from app.auth.routes import auth_bp
     from app.catalog.routes import catalog_bp

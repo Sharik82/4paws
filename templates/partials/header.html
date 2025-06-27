@@ -1,0 +1,58 @@
+<header class="header">
+    <div class="header-left">
+        <a href="{{ url_for('catalog.index') }}" class="logo">
+            <img src="{{ url_for('static', filename='img/header/logo.jpg') }}" alt="Лого">
+            <span class="logo-text">4 Paws</span>
+        </a>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Пошук..." oninput="searchProducts()">
+            <button type="button"><i class="fas fa-search"></i></button>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+    <nav class="nav">
+        <a href="#"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cow-solid.svg') }}" alt="Агро"> Агро</a>
+        <a href="{{ url_for('catalog.dog_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dog-solid.svg') }}" alt="Собаки"> Собаки</a>
+        <a href="{{ url_for('catalog.cat_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/cat-solid.svg') }}" alt="Коти"> Коти</a>
+        <a href="{{ url_for('catalog.rodents_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/frog-solid.svg') }}" alt="Гризуни"> Гризуни</a>
+        <a href="{{ url_for('catalog.fish_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/fish-solid.svg') }}" alt="Риби"> Риби</a>
+        <a href="{{ url_for('catalog.dove_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/dove-solid.svg') }}" alt="Птахи"> Птахи</a>
+        <a href="{{ url_for('catalog.snake_category') }}"><img class="nav-icon" src="{{ url_for('static', filename='img/header/staff-snake-solid.svg') }}" alt="Рептилії"> Рептилії</a>
+    </nav>
+    <div class="user-menu">
+        <button class="menu-btn">
+            <i class="fas fa-user"></i>
+        </button>
+        <button id="cartButton" class="icon-btn cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </button>
+        <button class="icon-btn night-mode-toggle" onclick="toggleNightMode()">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="icon-btn lang-switch" onclick="toggleLanguage()">
+            <i class="fas fa-language"></i>
+        </button>
+    </div>
+</header>
+<div class="dashboard-menu" id="dashboardMenu">
+    <div class="dashboard-header">
+        <h2>Особистий кабінет</h2>
+        <p id="greeting"></p>
+    </div>
+    <ul class="menu-items">
+        <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-user"></i>Мій профіль</a></li>
+        <li><a href="{{ url_for('auth.register') }}"><i class="icon fas fa-box"></i>Мої замовлення</a></li>
+        <li><a href="#"><i class="icon fas fa-map-marker-alt"></i>Адреси доставки</a></li>
+        <li><a href="#"><i class="icon fas fa-wallet"></i>Баланс гаманця</a></li>
+        <li><a href="#"><i class="icon fas fa-credit-card"></i>Способи оплати</a></li>
+        <li><a href="#"><i class="icon fas fa-sign-out-alt"></i>Вихід</a></li>
+    </ul>
+</div>
+<div id="notification" class="notification"></div>
+<div id="cartMenu" class="cart-menu">
+    <button class="close-cart" onclick="closeCart()">×</button>
+    <h3>Ваш кошик</h3>
+    <div id="cartItems" class="cart-items"></div>
+    <div id="cartTotal" class="cart-total">Загальна сума: 0.00 грн</div>
+    <button class="checkout-btn" onclick="submitCart()">Оформити замовлення</button>
+</div>
